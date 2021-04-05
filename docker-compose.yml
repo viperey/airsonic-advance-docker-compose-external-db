@@ -1,0 +1,40 @@
+# This will fail on a mkdir on /opt/airsonic/airsonic/transcode.
+# Resolve it by running: mkdir -p ./data/airsonic before running the docker-compose up
+version: "2.1"
+services:
+  airsonic:
+    image: airsonicadvanced/airsonic-advanced:edge-latest
+    container_name: airsonic
+    environment:
+      - PUID=XXX
+      - PGID=XXX
+      - TZ=XXX
+      - DatabaseConfigType=embed
+      - DatabaseConfigEmbedDriver=org.mariadb.jdbc.Driver
+      - DatabaseConfigEmbedUrl=jdbc:mariadb://db:3306/airsonic
+      - DatabaseConfigEmbedUsername=XXX
+      - DatabaseConfigEmbedPassword=XXX
+      - AIRSONIC_DIR=/opt/airsonic
+    volumes:
+      - ./data/airsonic:/opt/airsonic
+      - ./music:/var/music
+    ports:
+      - 4040:4040
+    devices:
+      - /dev/snd:/dev/snd #optional
+    restart: unless-stopped
+    depends_on:
+      - db
+
+  db:
+    image: linuxserver/mariadb:arm64v8-latest
+    volumes:
+      - ./data/db/config:/config/
+      - ./custom.cnf:/config/custom.cnf
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - MYSQL_ROOT_PASSWORD=XXX
+      - MYSQL_PASSWORD=XXX
+      - MYSQL_DATABASE=airsonic
+      - MYSQL_USER=airsonic
+    restart: unless-stopped
