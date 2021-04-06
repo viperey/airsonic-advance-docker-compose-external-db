@@ -9,11 +9,10 @@ services:
       - PUID=XXX
       - PGID=XXX
       - TZ=XXX
-      - DatabaseConfigType=embed
-      - DatabaseConfigEmbedDriver=org.mariadb.jdbc.Driver
-      - DatabaseConfigEmbedUrl=jdbc:mariadb://db:3306/airsonic
-      - DatabaseConfigEmbedUsername=XXX
-      - DatabaseConfigEmbedPassword=XXX
+      - spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
+      - spring.datasource.url=jdbc:mariadb://db:3306/airsonic
+      - spring.datasource.username=XXX
+      - spring.datasource.password=XXX
       - AIRSONIC_DIR=/opt/airsonic
     volumes:
       - ./data/airsonic:/opt/airsonic
