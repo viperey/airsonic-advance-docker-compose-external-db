@@ -1,5 +1,5 @@
-# This will fail on a mkdir on /opt/airsonic/airsonic/transcode.
-# Resolve it by running: mkdir -p ./data/airsonic before running the docker-compose up
+# *1
+# Custom stuff for character-set-server = utf8mb4 & collation-server=utf8mb4_unicode_ci
 version: "2.1"
 services:
   airsonic:
@@ -15,7 +15,6 @@ services:
       - spring.datasource.password=XXX
       - AIRSONIC_DIR=/opt/airsonic
     volumes:
-      - ./data/airsonic:/opt/airsonic
       - ./music:/var/music
     ports:
       - 4040:4040
@@ -29,7 +28,7 @@ services:
     image: linuxserver/mariadb:arm64v8-latest
     volumes:
       - ./data/db/config:/config/
-      - ./custom.cnf:/config/custom.cnf
+      - ./custom.cnf:/config/custom.cnf # (1)
       - /etc/localtime:/etc/localtime:ro
     environment:
       - MYSQL_ROOT_PASSWORD=XXX
